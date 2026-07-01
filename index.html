@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CommutAI — Passenger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="device">
+  <div class="notch"></div>
+  <div class="app" id="app">
+
+    <!-- ============ SPLASH ============ -->
+    <section class="screen splash active" data-screen="splash">
+      <div class="splash-glow"></div>
+      <div class="splash-mark">
+        <div class="splash-ring"></div>
+        <i class="fa-solid fa-route"></i>
+      </div>
+      <h1 class="splash-title">Commut<span>AI</span></h1>
+      <p class="splash-sub">Manolo Fortich Public Transit</p>
+      <div class="splash-loader"><span></span></div>
+    </section>
+
+    <!-- ============ LOGIN ============ -->
+    <section class="screen" data-screen="login">
+      <div class="auth-hero">
+        <div class="auth-badge"><i class="fa-solid fa-bus"></i></div>
+        <h2>Welcome back</h2>
+        <p>Log in to track your ride</p>
+      </div>
+      <form class="auth-form" data-nav="home" data-toast="Welcome back, Juan!">
+        <label class="field">
+          <span>Mobile number or email</span>
+          <input type="text" placeholder="09xx xxx xxxx" value="juan.delacruz@gmail.com">
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input type="password" placeholder="••••••••" value="••••••••">
+        </label>
+        <a class="link-forgot" data-nav="forgot">Forgot password?</a>
+        <button type="submit" class="btn-primary">Log in</button>
+      </form>
+      <p class="auth-switch">No account yet? <a data-nav="register">Register</a></p>
+      <p class="auth-guard"><i class="fa-solid fa-shield-halved"></i> LGU‑verified transit account</p>
+    </section>
+
+    <!-- ============ REGISTER ============ -->
+    <section class="screen" data-screen="register">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="login"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Create account</h3>
+        <span></span>
+      </div>
+      <form class="auth-form" data-nav="login" data-toast="Account created. Please log in.">
+        <label class="field"><span>Full name</span><input type="text" placeholder="Juan Dela Cruz"></label>
+        <label class="field"><span>Mobile number</span><input type="text" placeholder="09xx xxx xxxx"></label>
+        <label class="field"><span>Email</span><input type="email" placeholder="you@email.com"></label>
+        <label class="field"><span>Password</span><input type="password" placeholder="Create a password"></label>
+        <label class="field"><span>Passenger type</span>
+          <select>
+            <option>Regular</option>
+            <option>Student</option>
+            <option>Senior Citizen</option>
+            <option>PWD</option>
+          </select>
+        </label>
+        <button type="submit" class="btn-primary">Register</button>
+      </form>
+    </section>
+
+    <!-- ============ FORGOT PASSWORD ============ -->
+    <section class="screen" data-screen="forgot">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="login"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Reset password</h3>
+        <span></span>
+      </div>
+      <div class="forgot-illustration"><i class="fa-solid fa-key"></i></div>
+      <p class="forgot-copy">Enter the mobile number linked to your account. We'll send a one‑time reset code.</p>
+      <form class="auth-form" data-nav="login" data-toast="Reset code sent via SMS">
+        <label class="field"><span>Mobile number</span><input type="text" placeholder="09xx xxx xxxx"></label>
+        <button type="submit" class="btn-primary">Send reset code</button>
+      </form>
+    </section>
+
+    <!-- ============ HOME ============ -->
+    <section class="screen" data-screen="home">
+      <header class="home-header">
+        <div>
+          <p class="greet">Magandang adlaw, Juan 👋</p>
+          <h2>Where to today?</h2>
+        </div>
+        <button class="avatar-btn" data-nav="profile">JD</button>
+      </header>
+
+      <div class="live-card glass">
+        <div class="live-card-top">
+          <span class="pill pill-live"><i class="fa-solid fa-circle blink"></i> Live</span>
+          <span class="route-tag" id="home-route">Manolo Fortich ⇄ Cagayan de Oro</span>
+        </div>
+        <div class="map-fake" id="home-map">
+          <svg viewBox="0 0 320 140" class="route-svg">
+            <path id="route-path" d="M20,110 C 80,20 140,120 190,40 S 300,20 300,20" />
+            <circle id="bus-dot" cx="20" cy="110" r="7"></circle>
+          </svg>
+          <div class="map-terminal map-terminal--start"><i class="fa-solid fa-flag"></i></div>
+          <div class="map-terminal map-terminal--end"><i class="fa-solid fa-flag-checkered"></i></div>
+        </div>
+        <div class="live-stats">
+          <div class="live-stat">
+            <span class="live-stat-label">ETA</span>
+            <span class="live-stat-value" id="home-eta">4 min</span>
+          </div>
+          <div class="live-stat">
+            <span class="live-stat-label">Seats free</span>
+            <span class="live-stat-value" id="home-seats">12</span>
+          </div>
+          <div class="live-stat">
+            <span class="live-stat-label">Onboard</span>
+            <span class="live-stat-value" id="home-onboard">33</span>
+          </div>
+        </div>
+        <button class="btn-ghost-block" data-nav="tracking">Track this bus <i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+
+      <div class="quick-row">
+        <button class="quick-tile" data-nav="terminals"><i class="fa-solid fa-location-dot"></i><span>Nearby<br>terminals</span></button>
+        <button class="quick-tile" data-nav="buyticket"><i class="fa-solid fa-ticket"></i><span>Buy<br>ticket</span></button>
+        <button class="quick-tile" data-nav="tripinfo"><i class="fa-solid fa-circle-info"></i><span>Trip<br>info</span></button>
+        <button class="quick-tile" data-nav="history"><i class="fa-solid fa-clock-rotate-left"></i><span>Trip<br>history</span></button>
+      </div>
+
+      <div class="weather-card glass">
+        <i class="fa-solid fa-cloud-sun weather-icon"></i>
+        <div class="weather-info">
+          <p class="weather-temp" id="weather-temp">29°C</p>
+          <p class="weather-desc" id="weather-desc">Partly cloudy · Manolo Fortich</p>
+        </div>
+        <span class="weather-hint">Bring an umbrella, just in case</span>
+      </div>
+
+      <div class="section-row">
+        <h4>Announcements</h4>
+      </div>
+      <div class="announce-card glass">
+        <i class="fa-solid fa-bullhorn"></i>
+        <p>Route <strong>MF‑CDO Loop</strong> has an added trip at 5:30 PM starting today.</p>
+      </div>
+
+      <div class="section-row">
+        <h4>Upcoming trips</h4>
+        <a data-nav="history">See all</a>
+      </div>
+      <div class="trip-mini-list" id="upcoming-trips"></div>
+
+    </section>
+
+    <!-- ============ NEARBY TERMINALS ============ -->
+    <section class="screen" data-screen="terminals">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="home"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Nearby terminals</h3>
+        <span></span>
+      </div>
+      <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input placeholder="Search terminal or barangay"></div>
+      <div class="terminal-list" id="terminal-list"></div>
+    </section>
+
+    <!-- ============ LIVE TRACKING ============ -->
+    <section class="screen" data-screen="tracking">
+      <div class="topbar topbar--light">
+        <button class="icon-btn" data-nav="home"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Live tracking</h3>
+        <span></span>
+      </div>
+      <div class="track-map">
+        <svg viewBox="0 0 320 400" class="track-svg">
+          <path id="track-path" d="M40,380 C 20,300 120,300 100,220 S 200,140 180,80 S 260,40 280,20" />
+          <circle id="track-bus" cx="40" cy="380" r="9"></circle>
+        </svg>
+        <div class="track-pin track-pin--origin"><i class="fa-solid fa-house"></i></div>
+        <div class="track-pin track-pin--dest"><i class="fa-solid fa-graduation-cap"></i></div>
+      </div>
+      <div class="track-sheet glass">
+        <div class="track-sheet-handle"></div>
+        <div class="track-head">
+          <div>
+            <p class="track-bus-no">Bus 014 · MF‑CDO Loop</p>
+            <p class="track-plate">Plate KRT‑2291</p>
+          </div>
+          <span class="pill pill-live"><i class="fa-solid fa-circle blink"></i> Moving</span>
+        </div>
+        <div class="track-eta">
+          <span class="track-eta-num" id="track-eta">04:12</span>
+          <span class="track-eta-label">Estimated arrival at your stop</span>
+        </div>
+        <div class="track-stats-row">
+          <div><i class="fa-solid fa-chair"></i><span id="track-seats">12</span> seats free</div>
+          <div><i class="fa-solid fa-users"></i><span id="track-onboard">33</span> onboard</div>
+          <div><i class="fa-solid fa-gauge-high"></i><span id="track-speed">38</span> km/h</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TRIP INFO ============ -->
+    <section class="screen" data-screen="tripinfo">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="home"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Trip information</h3>
+        <span></span>
+      </div>
+      <div class="trip-detail-card glass">
+        <div class="trip-line">
+          <div class="trip-dot trip-dot--start"></div>
+          <div>
+            <p class="trip-place">Manolo Fortich Terminal</p>
+            <p class="trip-time">Departs 2:10 PM</p>
+          </div>
+        </div>
+        <div class="trip-connector"></div>
+        <div class="trip-line">
+          <div class="trip-dot trip-dot--end"></div>
+          <div>
+            <p class="trip-place">Agora Terminal, Cagayan de Oro</p>
+            <p class="trip-time">Arrives 3:05 PM (est.)</p>
+          </div>
+        </div>
+      </div>
+      <div class="info-grid">
+        <div class="info-chip"><span>Vehicle</span><strong>Bus 014</strong></div>
+        <div class="info-chip"><span>Driver</span><strong>R. Ramos</strong></div>
+        <div class="info-chip"><span>Conductor</span><strong>M. Uy</strong></div>
+        <div class="info-chip"><span>Fare</span><strong>₱65.00</strong></div>
+        <div class="info-chip"><span>Distance</span><strong>28.4 km</strong></div>
+        <div class="info-chip"><span>Duration</span><strong>~55 min</strong></div>
+      </div>
+      <div class="section-row"><h4>Trip progress</h4></div>
+      <div class="progress-track"><div class="progress-fill" id="tripinfo-progress" style="width:38%"></div></div>
+      <p class="progress-caption">Passed Barangay Alae · Next stop: Sumilao</p>
+    </section>
+
+    <!-- ============ BUY TICKET ============ -->
+    <section class="screen" data-screen="buyticket">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="home"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Buy ticket</h3>
+        <span></span>
+      </div>
+      <form class="ticket-form" id="ticket-form">
+        <label class="field">
+          <span>Route</span>
+          <select id="ticket-route">
+            <option>Manolo Fortich ⇄ Cagayan de Oro</option>
+            <option>Manolo Fortich ⇄ Malaybalay</option>
+            <option>Manolo Fortich ⇄ Impasugong</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Destination</span>
+          <select id="ticket-destination">
+            <option>Agora Terminal</option>
+            <option>Cogon Market</option>
+            <option>Lim Ket Kai</option>
+            <option>Centrio Mall</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Passenger type</span>
+          <select id="ticket-type">
+            <option data-fare="65">Regular — ₱65.00</option>
+            <option data-fare="52">Student — ₱52.00</option>
+            <option data-fare="52">Senior Citizen — ₱52.00</option>
+            <option data-fare="52">PWD — ₱52.00</option>
+          </select>
+        </label>
+        <div class="fare-box">
+          <span>Total fare</span>
+          <strong id="fare-amount">₱65.00</strong>
+        </div>
+        <button type="submit" class="btn-primary">Generate QR ticket</button>
+      </form>
+    </section>
+
+    <!-- ============ QR TICKET ============ -->
+    <section class="screen" data-screen="qrticket">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="home"><i class="fa-solid fa-xmark"></i></button>
+        <h3>Your ticket</h3>
+        <span></span>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-top">
+          <span class="pill pill-status" id="qr-status">Valid</span>
+          <span class="ticket-brand">CommutAI</span>
+        </div>
+        <canvas id="qr-canvas" width="180" height="180"></canvas>
+        <p class="ticket-code" id="qr-code">CMT‑29X7K4</p>
+        <div class="ticket-divider"><span></span><i class="fa-solid fa-bus"></i><span></span></div>
+        <div class="ticket-rows">
+          <div class="ticket-row"><span>Passenger</span><strong>Juan Dela Cruz</strong></div>
+          <div class="ticket-row"><span>Route</span><strong id="qr-route">Manolo Fortich ⇄ CDO</strong></div>
+          <div class="ticket-row"><span>Destination</span><strong id="qr-dest">Agora Terminal</strong></div>
+          <div class="ticket-row"><span>Seat</span><strong id="qr-seat">14B</strong></div>
+          <div class="ticket-row"><span>Fare</span><strong id="qr-fare">₱65.00</strong></div>
+        </div>
+      </div>
+      <button class="btn-primary" data-nav="home">Done</button>
+    </section>
+
+    <!-- ============ NOTIFICATIONS ============ -->
+    <section class="screen" data-screen="notifications">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="home"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Notifications</h3>
+        <span></span>
+      </div>
+      <div class="notif-list" id="notif-list"></div>
+    </section>
+
+    <!-- ============ TRIP HISTORY ============ -->
+    <section class="screen" data-screen="history">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="home"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Trip history</h3>
+        <span></span>
+      </div>
+      <div class="history-list" id="history-list"></div>
+    </section>
+
+    <!-- ============ PROFILE ============ -->
+    <section class="screen" data-screen="profile">
+      <div class="profile-header">
+        <button class="icon-btn icon-btn--onlight" data-nav="home"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="profile-avatar">JD</div>
+        <h3>Juan Dela Cruz</h3>
+        <p>Regular Passenger · Member since 2024</p>
+      </div>
+      <div class="profile-stats">
+        <div><strong>128</strong><span>Trips</span></div>
+        <div><strong>₱8,320</strong><span>Spent</span></div>
+        <div><strong>4.9</strong><span>Rating</span></div>
+      </div>
+      <div class="profile-menu">
+        <button class="menu-item"><i class="fa-solid fa-user"></i><span>Edit profile</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="menu-item"><i class="fa-solid fa-credit-card"></i><span>Payment methods</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="menu-item" data-nav="history"><i class="fa-solid fa-clock-rotate-left"></i><span>Trip history</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="menu-item" data-nav="settings"><i class="fa-solid fa-gear"></i><span>Settings</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="menu-item menu-item--danger" data-nav="login" data-toast="Logged out"><i class="fa-solid fa-right-from-bracket"></i><span>Log out</span><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section class="screen" data-screen="settings">
+      <div class="topbar">
+        <button class="icon-btn" data-nav="profile"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3>Settings</h3>
+        <span></span>
+      </div>
+      <div class="settings-group">
+        <p class="settings-label">Preferences</p>
+        <div class="settings-row">
+          <span><i class="fa-solid fa-moon"></i> Dark mode</span>
+          <label class="switch"><input type="checkbox" id="dark-toggle"><span class="slider"></span></label>
+        </div>
+        <div class="settings-row">
+          <span><i class="fa-solid fa-bell"></i> Push notifications</span>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="settings-row">
+          <span><i class="fa-solid fa-location-crosshairs"></i> Location access</span>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+      </div>
+      <div class="settings-group">
+        <p class="settings-label">Account</p>
+        <div class="settings-row"><span><i class="fa-solid fa-language"></i> Language</span><strong>English</strong></div>
+        <div class="settings-row"><span><i class="fa-solid fa-shield"></i> Privacy policy</span><i class="fa-solid fa-chevron-right"></i></div>
+        <div class="settings-row"><span><i class="fa-solid fa-circle-info"></i> App version</span><strong>1.0.0</strong></div>
+      </div>
+    </section>
+
+    <!-- ============ BOTTOM NAV ============ -->
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="nav-item active" data-nav="home" data-tab="home"><i class="fa-solid fa-house"></i><span>Home</span></button>
+      <button class="nav-item" data-nav="buyticket" data-tab="ticket"><i class="fa-solid fa-ticket"></i><span>Ticket</span></button>
+      <button class="nav-item" data-nav="notifications" data-tab="notif"><i class="fa-solid fa-bell"></i><span>Alerts</span><span class="nav-badge" id="nav-badge">3</span></button>
+      <button class="nav-item" data-nav="profile" data-tab="profile"><i class="fa-solid fa-user"></i><span>Profile</span></button>
+    </nav>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
